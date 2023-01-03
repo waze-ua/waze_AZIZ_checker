@@ -2,7 +2,7 @@
 // @name         WME Checker - Open all links
 // @namespace    https://greasyfork.org/ru/users/160654-waze-ukraine
 // @version      2023.01.03.002
-// @description  Скрипт создает кноку открытия всех пермалинков, расположенных на одной странице ошибок, в отдельных вкладках.
+// @description  Скрипт создает кнопку открытия всех пермалинков, расположенных на одной странице ошибок, в отдельных вкладках.
 // @author       Sapozhnik
 // @match        https://checker.waze.uz/checker/errorlist/*
 // @updateURL    https://greasyfork.org/ru/scripts/457575-wme-checker-open-all-links
