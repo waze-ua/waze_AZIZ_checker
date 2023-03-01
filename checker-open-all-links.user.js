@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WME Checker - Open all links
 // @namespace    https://greasyfork.org/ru/users/160654-waze-ukraine
-// @version      2023.03.01.002
+// @version      2023.03.01.003
 // @description  Скрипт создает кнопку открытия всех пермалинков, расположенных на одной странице ошибок, в отдельных вкладках.
 // @author       Sapozhnik
 // @match        https://checker.waze.uz/checker/errorlist/*
@@ -36,7 +36,7 @@ var hide1 = document.createElement("span");
 hide1.innerHTML = '<th><span><b><a href> Hide All </a></b>&nbsp;&nbsp;</span></th>';
     hide1.onclick = function() { MyFunc_hide()}
 // Получаем ссылку на элемент, перед которым мы хотим вставить hide1
-var hide2 = document.document.querySelectorAll('th');
+var hide2 = document.querySelectorAll('th');
     
     //Получаем ссылку на родителя hide2
 var parentDiv_hide = hide2[12];
