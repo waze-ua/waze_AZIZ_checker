@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         WME AZ-Checker - Addons
+// @name         WME AZ-Checker - UI Addons
 // @namespace    https://greasyfork.org/ru/users/160654-waze-ukraine
-// @version      2023.03.02.005
-// @description  Скрипт создает кнопку Open All и Hide All всех пермалинков, расположенных на одной странице ошибок, в отдельных вкладках.
+// @version      2023.03.02.006
+// @description  Скрипт создает кнопки Open All и Hide All для всех пермалинков, расположенных на одной странице ошибок, в отдельных вкладках.
 // @author       Sapozhnik
 // @match        https://checker.waze.uz/checker/errorlist/*
 // @updateURL    https://greasyfork.org/ru/scripts/457575-wme-checker-open-all-links
