@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         WME Checker - Open all links
+// @name         WME Checker - Addons
 // @namespace    https://greasyfork.org/ru/users/160654-waze-ukraine
-// @version      2023.03.01.003
-// @description  Скрипт создает кнопку открытия всех пермалинков, расположенных на одной странице ошибок, в отдельных вкладках.
+// @version      2023.03.02.001
+// @description  Скрипт создает кнопку Open All и Hide All всех пермалинков, расположенных на одной странице ошибок, в отдельных вкладках.
 // @author       Sapozhnik
 // @match        https://checker.waze.uz/checker/errorlist/*
 // @updateURL    https://greasyfork.org/ru/scripts/457575-wme-checker-open-all-links
@@ -11,8 +11,6 @@
 
 (function() {
     'use strict';
-   // Array.from(document.getElementsByClassName('lnk')).map(i=>{i.target="_blank"; return i}).map(i=>{i.click(); return i});
-
     // Создаем Open All
     // Создаём новый <span>
 var sp1 = document.createElement("span");
@@ -31,23 +29,19 @@ parentDiv.insertBefore(sp1, sp2[0]);
 
 // Создаем hide
     // Создаём новый <span>
-var hide1 = document.createElement("span");
+var hide1 = document.createElement("th");
+hide1.innerHTML = '<a href> Hide All </a>';
 
-hide1.innerHTML = '<th><span><b><a href> Hide All </a></b>&nbsp;&nbsp;</span></th>';
-    hide1.onclick = function() { MyFunc_hide()}
-// Получаем ссылку на элемент, перед которым мы хотим вставить hide1
+    // Получаем ссылку на элемент, перед которым мы хотим вставить hide1
 var hide2 = document.querySelectorAll('th');
-    
+
     //Получаем ссылку на родителя hide2
 var parentDiv_hide = hide2[12];
-//            console.log (parentDiv);
+//           console.log (parentDiv_hide);
 
-// Вставляем sp1 перед sp2
-parentDiv_hide.innerHTML = hide1;
-
-
-    
-    
+// Вставляем hide1 вместо hide2
+    parentDiv_hide.innerHTML = hide1.innerHTML;
+    parentDiv_hide.onclick = function() {MyFunc_hide()}
 
 function MyFunc(){
     Array.from(document.getElementsByClassName('lnk')).map(i=>{i.target="_blank"; return i}).map(i=>{i.click(); return i});
@@ -55,6 +49,5 @@ function MyFunc(){
 function MyFunc_hide(){
     Array.from(document.querySelectorAll('a[href*="/hide_element/"]')).map(i=>{i.target="_blank"; return i}).map(i=>{i.click(); return i});
 }
-
 
 })();
