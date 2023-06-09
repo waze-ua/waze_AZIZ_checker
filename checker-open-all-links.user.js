@@ -4,6 +4,7 @@
 // @version      2023.06.09.001
 // @description  Скрипт создает кнопки Open All и Hide All для всех пермалинков, расположенных на одной странице ошибок, в отдельных вкладках.
 // @author       Sapozhnik
+// @updateURL    https://greasyfork.org/ru/scripts/457575-wme-checker-open-all-links
 // @match        https://checker.waze.uz/checker/errorlist/*
 // ==/UserScript==
 
