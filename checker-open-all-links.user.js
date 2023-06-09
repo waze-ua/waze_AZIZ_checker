@@ -14,7 +14,7 @@
 var sp1 = document.createElement("span");
 
 sp1.innerHTML = '<span><b><a href> Open All </a></b>&nbsp;&nbsp;</span>';
-// Получаем ссылку на элемент, перед которым мы хотим вставить sp1
+// Получаем ссылку на элемент, перед которым мы хот им вставить sp1
     sp1.onclick = function() {MyFunc()}
 
 var sp2 = document.getElementsByClassName('page-links');
