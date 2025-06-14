@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         WME AZ-Checker - UI Addons
 // @namespace    https://greasyfork.org/ru/users/160654-waze-ukraine
-// @version      2025.06.14.001
-// @description  Crates addition button Open All и Hide All for all permalinks which placed on one page of report
+// @version      2025.06.14.002
+// @description  Addon creates addition buttons Open All и Hide All for all permalinks which placed on one page of report
 // @author       Sapozhnik
 // @match        https://checker2.waze.uz/checker/errorlist/*
 // @match        https://checker.waze.uz/checker/errorlist/*
