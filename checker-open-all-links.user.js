@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          WME AZ-Checker - UI Addons
 // @namespace     https://greasyfork.org/ru/users/160654-waze-ukraine
-// @version       2025.06.29.009
+// @version       2025.07.18.001
 // @description   Додаток перекладає елементи меню, заголовки таблиць, кнопки та інші текстові елементи на деяких сторінках Checker. Додає додаткові кнопки "Відкрити всі" та "Приховати всі" на сторінках звіту про помилки. Приховує рядки, що містять "Russia".
 // @author        Sapozhnik
 // @match         https://checker2.waze.uz/*
@@ -22,6 +22,7 @@
             'Visitors': 'Visitors',
             'Find segment': 'Find segment',
             'Help': 'Help',
+            'What\'s New': 'What\'s New',
             'About': 'About',
             'Open All': 'Open All',
             'Hide All': 'Hide All',
@@ -46,6 +47,7 @@
             'Visitors': 'Відвідувачі',
             'Find segment': 'Знайти сегмент',
             'Help': 'Допомога',
+            'What\'s New': 'Що нового',
             'About': 'Про нас',
             'Open All': 'Відкрити всі',
             'Hide All': 'Приховати всі',
@@ -70,6 +72,7 @@
             'Visitors': 'Посетители',
             'Find segment': 'Найти сегмент',
             'Help': 'Помощь',
+            'What\'s New': 'Что нового',
             'About': 'О нас',
             'Open All': 'Открыть все',
             'Hide All': 'Скрыть все',
