@@ -1,12 +1,14 @@
 // ==UserScript==
-// @name          WME AZ-Checker - UI Addons
-// @namespace     https://greasyfork.org/ru/users/160654-waze-ukraine
-// @version       2025.07.18.001
-// @description   Додаток перекладає елементи меню, заголовки таблиць, кнопки та інші текстові елементи на деяких сторінках Checker. Додає додаткові кнопки "Відкрити всі" та "Приховати всі" на сторінках звіту про помилки. Приховує рядки, що містять "Russia".
-// @author        Sapozhnik
-// @match         https://checker2.waze.uz/*
-// @match         https://checker.waze.uz/*
-// @grant         none
+// @name         WME AZ-Checker - UI Addons
+// @namespace    https://greasyfork.org/ru/users/160654-waze-ukraine
+// @version      2026.04.19.001
+// @description  Додаток перекладає елементи меню, заголовки таблиць, кнопки та інші текстові елементи на деяких сторінках Checker. Додає додаткові кнопки "Відкрити всі" та "Приховати всі" на сторінках звіту про помилки. Приховує рядки, що містять "Russia".
+// @author       Sapozhnik
+// @match        https://checker2.waze.uz/*
+// @match        https://checker.waze.uz/*
+// @grant        none
+// @downloadURL  https://update.greasyfork.org/scripts/457575/WME%20AZ-Checker%20-%20UI%20Addons.user.js
+// @updateURL    https://update.greasyfork.org/scripts/457575/WME%20AZ-Checker%20-%20UI%20Addons.meta.js
 // ==/UserScript==
 
 (function () {
@@ -24,6 +26,7 @@
             'Help': 'Help',
             'What\'s New': 'What\'s New',
             'About': 'About',
+            'Open All': 'Open All',
             'Open All': 'Open All',
             'Hide All': 'Hide All',
             'History': 'History',
@@ -50,6 +53,7 @@
             'What\'s New': 'Що нового',
             'About': 'Про нас',
             'Open All': 'Відкрити всі',
+            'Open all': 'Відкрити всі',
             'Hide All': 'Приховати всі',
             'History': 'Історія',
             'Country': 'Країна',
@@ -75,6 +79,7 @@
             'What\'s New': 'Что нового',
             'About': 'О нас',
             'Open All': 'Открыть все',
+            'Open all': 'Открыть все',
             'Hide All': 'Скрыть все',
             'History': 'История',
             'Country': 'Страна',
@@ -91,18 +96,13 @@
         }
     };
 
-    // Визначаємо бажану мову користувача
     const userLang = navigator.language.split('-')[0];
     const currentTranslations = translations[userLang] || translations['en'];
 
-    // --- Функція для перекладу елементів, що містять іконки ---
     function translateElementWithIcon(element) {
         const iconElement = element.querySelector('i');
         if (iconElement) {
-            // Отримуємо видимий текст елемента, виключаючи текст іконки (якщо такий є)
-            // Використання innerText для отримання тільки видимого тексту
             let originalText = element.innerText.replace(iconElement.innerText, '').trim();
-
             if (currentTranslations[originalText]) {
                 const iconHtml = iconElement.outerHTML;
                 element.innerHTML = `${iconHtml}${currentTranslations[originalText]}`;
@@ -112,15 +112,10 @@
         return false;
     }
 
-    // --- Функція для перекладу простих текстових елементів ---
     function translateTextElement(element) {
-        // Спеціальна обробка для "ToDo" та "Total / Visited / Hidden"
-        // Ми працюємо з текстовими вузлами, щоб уникнути проблем з тегами <br> та <nobr>
         if (element.children.length > 0 && element.querySelector('br') && element.querySelector('nobr')) {
             let firstTextNode = null;
             let nobrElement = null;
-
-            // Шукаємо перший текстовий вузол та елемент <nobr>
             for (let node of element.childNodes) {
                 if (node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0 && !firstTextNode) {
                     firstTextNode = node;
@@ -128,20 +123,14 @@
                     nobrElement = node;
                 }
             }
-
             if (firstTextNode && nobrElement) {
                 const originalToDoText = firstTextNode.textContent.trim();
                 const originalSubText = nobrElement.textContent.trim();
-
-                let translatedToDo = currentTranslations[originalToDoText] || originalToDoText;
-                let translatedSub = currentTranslations[originalSubText] || originalSubText;
-
-                firstTextNode.textContent = translatedToDo;
-                nobrElement.textContent = translatedSub;
+                firstTextNode.textContent = currentTranslations[originalToDoText] || originalToDoText;
+                nobrElement.textContent = currentTranslations[originalSubText] || originalSubText;
                 return true;
             }
         }
-
         const originalText = element.textContent.trim();
         if (currentTranslations[originalText]) {
             element.textContent = currentTranslations[originalText];
@@ -150,115 +139,75 @@
         return false;
     }
 
-    // --- Функція для приховування рядків з певним текстом ---
     function hideTableRowsContaining(textToHide) {
         const mainTable = document.querySelector('table.table');
-        if (!mainTable) {
-            console.warn("Основну таблицю не знайдено, рядки приховати не вдасться.");
-            return;
-        }
-
+        if (!mainTable) return;
         const tableRows = mainTable.querySelectorAll('tbody tr');
-        let hiddenCount = 0;
-
         tableRows.forEach(row => {
-            const rowText = row.textContent.toLowerCase();
-            if (rowText.includes(textToHide.toLowerCase())) {
+            if (row.textContent.toLowerCase().includes(textToHide.toLowerCase())) {
                 row.style.display = 'none';
-                hiddenCount++;
             }
         });
-        if (hiddenCount > 0) {
-            console.log(`Приховано ${hiddenCount} рядків, що містять "${textToHide}".`);
-        } else {
-            console.log(`Рядків, що містять "${textToHide}", не знайдено.`);
-        }
     }
 
-
-    // --- Запуск функцій перекладу та приховування ---
-
-    // Переклад меню
-    const menuItems = document.querySelectorAll('.navbar-nav .nav-item .nav-link');
-    menuItems.forEach(item => {
-        translateElementWithIcon(item);
-    });
-
-    // Переклад кнопок "History" та "Settings" (і інших action-btn)
-    const actionButtons = document.querySelectorAll('a.action-btn');
-    actionButtons.forEach(button => {
-        translateElementWithIcon(button);
-    });
-
-    // Переклад заголовків таблиці (універсально для всіх th[scope="col"])
-    const tableHeaders = document.querySelectorAll('th[scope="col"]');
-    tableHeaders.forEach(header => {
-        translateTextElement(header);
-    });
-
-    // Переклад заголовка "Countries"
+    // --- Виконання перекладів ---
+    document.querySelectorAll('.navbar-nav .nav-item .nav-link').forEach(item => translateElementWithIcon(item));
+    document.querySelectorAll('a.action-btn').forEach(button => translateElementWithIcon(button));
+    document.querySelectorAll('th[scope="col"]').forEach(header => translateTextElement(header));
     const countriesHeader = document.querySelector('h5.mb-0');
-    if (countriesHeader) {
-        translateElementWithIcon(countriesHeader);
-    }
+    if (countriesHeader) translateElementWithIcon(countriesHeader);
 
-    // --- Приховування рядків таблиці з "Russia" (тільки на сторінці з таблицею країн) ---
     if (document.querySelector('table.table')) {
         hideTableRowsContaining('Russia');
     }
 
+    document.querySelector('body').style.backgroundColor = "#f0f0f3";
 
-    // --- Зміна дизайну (застосовується на всіх сторінках) ---
-    document.querySelector('body').setAttribute("style", "background-color: #f0f0f3");
+    // --- Додавання кнопок управління (Open All / Hide All) ---
+    if (window.location.pathname.includes('/checker/')) {
 
-
-    // --- Умовне додавання кнопок "Open All" та "Hide All" (тільки на сторінках errorlist) ---
-    if (window.location.pathname.startsWith('/checker/errorlist/')) {
-
-        const sp1 = document.createElement("span");
-        sp1.innerHTML = `<span><a href>${currentTranslations['Open All']}</a><br></span>`;
-        sp1.onclick = function () { MyFunc() };
-
-        const thead = document.querySelector('thead');
-        if (thead) {
-            const firstTr = thead.querySelector('tr');
-            if (firstTr) {
-                const allThInFirstTr = firstTr.querySelectorAll('th');
-                if (allThInFirstTr.length > 1) {
-                    const secondTh = allThInFirstTr[1];
-                    secondTh.insertBefore(sp1, secondTh.firstChild);
-                    console.log(`Кнопку '${currentTranslations['Open All']}' вставлено у другий <th>.`);
-                } else {
-                    console.warn("Could not find a second <th> element in the first <tr> of <thead>.");
+        // 1. Кнопка Open All у заголовку
+        const openAllSpan = document.createElement("span");
+        openAllSpan.innerHTML = `<a href="javascript:void(0)" style="text-decoration:none; color:inherit;">${currentTranslations['Open All']}</a><br>`;
+        openAllSpan.onclick = function (e) {
+            e.preventDefault();
+            const links = document.querySelectorAll('td a[href*="/checker/go_waze/"]');
+            links.forEach(link => {
+                if (link.innerText.trim() !== 'β') {
+                    window.open(link.href, '_blank');
                 }
-            } else {
-                console.warn("Could not find the first <tr> element inside <thead>.");
-            }
-        } else {
-            console.warn("Could not find <thead> element on the page. 'Open All' button will not be added.");
+            });
+        };
+
+        const firstTheadTr = document.querySelector('thead tr');
+        if (firstTheadTr && firstTheadTr.cells.length > 1) {
+            firstTheadTr.cells[1].insertBefore(openAllSpan, firstTheadTr.cells[1].firstChild);
         }
 
-        const hide1 = document.createElement("th");
-        hide1.innerHTML = `<a href> ${currentTranslations['Hide All']} </a>`;
-
-        const hide2 = document.querySelectorAll('th');
-        const hide2_length = hide2.length - 1;
-
-        if (hide2.length > 0) {
-            const parentDiv_hide = hide2[hide2_length];
-            parentDiv_hide.innerHTML = hide1.innerHTML;
-            parentDiv_hide.onclick = function () { MyFunc_hide() };
-            console.log(`Кнопку '${currentTranslations['Hide All']}' оброблено.`);
-        } else {
-            console.warn("No <th> elements found for 'Hide All' button. It might not be added.");
-        }
-
-        function MyFunc() {
-            Array.from(document.querySelectorAll('a[href$="/0/"][href*="/checker/go_waze"]')).map(i => { i.target = "_blank"; return i }).map(i => { i.click(); return i });
-        }
-
-        function MyFunc_hide() {
-            Array.from(document.querySelectorAll('a[href*="/hide_element"]')).map(i => { i.target = "_blank"; return i }).map(i => { i.click(); return i });
+        // 2. Кнопка Hide All у заголовку останньої колонки
+        const lastTh = document.querySelector('thead tr th:last-child');
+        if (lastTh) {
+            const hideAllLink = document.createElement("a");
+            hideAllLink.href = "javascript:void(0)";
+            hideAllLink.style.textDecoration = "none";
+            hideAllLink.style.color = "inherit";
+            hideAllLink.textContent = currentTranslations['Hide All'];
+            hideAllLink.onclick = function (e) {
+                e.preventDefault();
+                const hideForms = document.querySelectorAll('form[action*="/hide_element/"]');
+                if (hideForms.length === 0) return;
+                
+                if (confirm(`${currentTranslations['Hide All']} (${hideForms.length})?`)) {
+                    hideForms.forEach((form, index) => {
+                        setTimeout(() => {
+                            form.target = "_blank"; // Щоб не перезавантажувати поточну сторінку
+                            form.submit();
+                        }, index * 150); // Невелика затримка для стабільності
+                    });
+                }
+            };
+            lastTh.innerHTML = ''; 
+            lastTh.appendChild(hideAllLink);
         }
     }
 })();
